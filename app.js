@@ -31,7 +31,7 @@ function strip(h){return h.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim()}
 function wrapTables(h){return h.replace(/<table/g,'<div class="tw"><table').replace(/<\/table>/g,'</table></div>')}
 function ac(c){return 'var(--a'+c.ato+')'}
 function ico(p){return '<svg viewBox="0 0 24 24" aria-hidden="true">'+p+'</svg>'}
-function img(k,n){return 'img/'+k+'_'+(n<10?'0':'')+n+'.jpg'}
+function img(k,n){return ''+k+'_'+(n<10?'0':'')+n+'.jpg'}
 function setTheme(t){document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark');
   var m=document.querySelector('meta[name=theme-color]');if(m)m.setAttribute('content',t==='light'?'#f6eedb':'#1c0e18')}
 function setFs(){document.documentElement.style.setProperty('--fs',FS[S.fs||0])}
@@ -41,7 +41,7 @@ function score(n){var a=S.pred[n];if(!a)return null;var t=0;a.forEach(function(x
 function pearson(c){var h=(c.sec['Conexão com o Mapa Arquetípico']||'').split(/sombra/i)[0],out=[];
   (h.match(/<em>(.*?)<\/em>/g)||[]).forEach(function(m){var t=m.replace(/<[^>]+>/g,'');if(PEARSON.indexOf(t)>=0&&out.indexOf(t)<0)out.push(t)});return out}
 function slug(c){return (c.num<10?'0':'')+c.num+'-'+c.nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
-function pdfUrl(c){return 'diarios/diario-'+slug(c)+'.pdf'}
+function pdfUrl(c){return 'diario-'+slug(c)+'.pdf'}
 function roman(c){return esc(c.roman)}
 
 /* ---------- roteamento ---------- */
@@ -118,7 +118,7 @@ function vArc(){var n=R.n,c=D.cards[n],tab=R.tab||'img',a=ACTS[c.ato],S2=c.sec;
   +'<figure><button data-zoom="'+n+'" data-k="mars" aria-label="Ampliar Marselha"><img src="'+img('mars',n)+'" alt="'+esc(c.nome)+', Marselha"></button><figcaption>Marselha'+marsNote+'</figcaption></figure></div>'
   +'<div><div class="kicker" style="color:var(--ac)">'+a.name+'</div><div class="rn">'+roman(c)+'</div><h1>'+esc(c.nome)+'</h1><div class="kw">'+esc(c.palavras)+'</div>'
   +'<dl class="idt"><dt>Rider-Waite</dt><dd>'+esc(c.rw)+'</dd><dt>Marselha</dt><dd>'+esc(c.marselha)+'</dd></dl>'
-  +'<div class="dlrow"><a class="btn sm" href="'+pdfUrl(c)+'" target="_blank" rel="noopener">Diário em PDF para imprimir</a></div>'
+  +'<div class="dlrow"><a class="btn sm" href="'+pdfUrl(c)+'" target="_blank" rel="noopener" download>Diário em PDF para imprimir</a></div>'
   +(pe.length?'<div class="pchips"><span class="lbl">Mapa Arquetípico</span>'+pe.map(function(x){return '<span class="chip gold">'+esc(x)+'</span>'}).join('')+'</div>':'')+'</div></header>'
   +'<div class="tabsbar" role="tablist">'+CT.map(function(t){return '<button role="tab" data-tab="'+t[0]+'" aria-selected="'+(t[0]===tab)+'">'+t[1]+'</button>'}).join('')+'</div>';
   var sec=function(t,body){return '<section class="sect"><h2>'+t+'</h2>'+body+'</section>'};
@@ -146,7 +146,7 @@ function scoreInner(c,t){if(t==null)return '<div class="n">–</div><p>Marque as
   var b=t<=2?0:t<=5?1:2,lbl=['Pouco acessado','Convive com outros','Provavelmente predominante'][b];
   return '<div class="n">'+t+'<small style="font-size:16px;color:var(--muted)">/8</small></div><p><span class="band-lbl">'+lbl+'</span>'+esc(c.pred.bands[b]||'')+'</p>'}
 function vEu(c){var n=c.num,h='';
-  h+='<section class="sect"><h2>Diário para escrever à mão</h2><p class="prose" style="margin:0 0 12px">Um diário de 7 páginas desta carta, com a imagem, perguntas reflexivas, teste, experimento da semana e meditação. Imprima e escreva à mão.</p><a class="btn" href="'+pdfUrl(c)+'" target="_blank" rel="noopener">Abrir o diário de '+esc(c.nome)+' (PDF)</a></section>';
+  h+='<section class="sect"><h2>Diário para escrever à mão</h2><p class="prose" style="margin:0 0 12px">Um diário de 7 páginas desta carta, com a imagem, perguntas reflexivas, teste, experimento da semana e meditação. Imprima e escreva à mão.</p><a class="btn" href="'+pdfUrl(c)+'" target="_blank" rel="noopener" download>Abrir o diário de '+esc(c.nome)+' (PDF)</a></section>';
   h+='<section class="sect"><h2>É um arquétipo predominante em mim?</h2>'+predBlock(c)+'</section>';
   h+='<section class="sect"><h2>Atividades reflexivas</h2><p class="note" style="margin:0 0 12px">Suas respostas ficam salvas neste aparelho e aparecem na aba Diário.</p>'+c.ativ.prompts.map(function(p,i){return field(n+':'+i,esc(p),3)}).join('')
    +'<div class="mito prose" style="margin:16px 0"><p><strong>Experimento da semana.</strong> '+esc(c.ativ.exp)+'</p></div>'+field(n+':exp','O que aconteceu ao fazer o experimento?',3)
@@ -194,7 +194,7 @@ function allNotes(){var out=[];D.cards.forEach(function(c){c.ativ.prompts.forEac
   [['exp','Experimento da semana'],['orac',c.oraculo],['med','Meditação: o que apareceu?']].forEach(function(x){var v=(S.notes[c.num+':'+x[0]]||'').trim();if(v)out.push({c:c,q:x[1],a:v})})});return out}
 function fmtDate(t){try{return new Date(t).toLocaleDateString('pt-BR',{day:'2-digit',month:'short',year:'numeric'})}catch(e){return ''}}
 function vDiario(){var notes=allNotes(),h='<div class="ph"><div class="kicker">Diário de Bordo</div><h1>Diário</h1></div><p class="prose" style="margin:0 0 16px">Escreva livremente aqui e reencontre as respostas das reflexões de cada carta. Tudo fica salvo neste aparelho.</p>'
-  +'<div class="field"><label for="freeText">Nova anotação</label><textarea id="freeText" rows="4" placeholder="O que ficou em você hoje?"></textarea><div class="row-actions"><button class="btn sm" data-act="addfree">Salvar anotação</button><button class="btn sm ghost" data-act="copyall">Copiar tudo</button><span class="saved" id="copied" aria-live="polite"></span></div></div>';
+  +'<div class="field"><label for="freeText">Nova anotação</label><textarea id="freeText" rows="4" placeholder="O que ficou em você hoje?"></textarea><div class="row-actions"><button class="btn sm" data-act="addfree">Salvar anotação</button><button class="btn sm ghost" data-act="copyall">Copiar tudo</button><button class="btn sm ghost" data-act="dltxt">Baixar .txt</button><span class="saved" id="copied" aria-live="polite"></span></div></div>';
   h+='<section class="sect"><h2>Anotações livres</h2>';
   if(!S.free.length)h+='<div class="empty">Nenhuma anotação ainda.</div>';
   S.free.slice().reverse().forEach(function(e){h+='<div class="entry"><div class="meta"><span>'+fmtDate(e.t)+'</span><button class="link" data-delfree="'+e.t+'">apagar</button></div><p>'+esc(e.x)+'</p></div>'});
@@ -202,7 +202,7 @@ function vDiario(){var notes=allNotes(),h='<div class="ph"><div class="kicker">D
   if(!notes.length)h+='<div class="empty">Quando você responder às atividades de uma carta, as respostas aparecem aqui.</div>';
   var last=-1;notes.forEach(function(e){if(e.c.num!==last){last=e.c.num;h+='<h3 style="margin:18px 0 6px;font-size:14px;color:var(--a'+e.c.ato+')">'+roman(e.c)+' · '+esc(e.c.nome)+' <button class="link" data-arc="'+e.c.num+'" data-tab="eu" style="margin-left:8px">abrir</button></h3>'}
     h+='<div class="entry"><q>'+esc(e.q)+'</q><p>'+esc(e.a)+'</p></div>'});
-  h+='</section><section class="sect"><h2>Diários para imprimir</h2><p class="note" style="margin:0 0 12px">Cada carta tem um diário em PDF de 7 páginas para escrever à mão: imagem do arcano, perguntas reflexivas, teste de predominância, experimento da semana, meditação e fechamento. O diário completo reúne os 22 arcanos, com abertura e fechamento da jornada (157 páginas).</p><div style="margin-bottom:12px"><a class="btn" href="diarios/diario-completo.pdf" target="_blank" rel="noopener">Diário completo (PDF)</a></div><div class="dlist">'+D.cards.map(function(c){return '<a href="'+pdfUrl(c)+'" target="_blank" rel="noopener" style="--ac:'+ac(c)+'"><b>'+roman(c)+'</b>'+esc(c.nome)+'</a>'}).join('')+'</div></section><section class="sect"><h2>Backup do progresso</h2><p class="note" style="margin:0 0 10px">Seu progresso fica só neste navegador. Para levar para outro aparelho ou guardar com segurança, baixe o backup e depois restaure no outro lugar.</p><div class="row-actions"><button class="btn sm ghost" data-act="exportjson">Baixar backup</button><button class="btn sm ghost" data-act="importjson">Restaurar backup</button><input type="file" id="impfile" accept="application/json,.json" hidden><span class="saved" id="bk" aria-live="polite"></span></div></section>';
+  h+='</section><section class="sect"><h2>Diários para imprimir</h2><p class="note" style="margin:0 0 12px">Cada carta tem um diário em PDF de 7 páginas para escrever à mão: imagem do arcano, perguntas reflexivas, teste de predominância, experimento da semana, meditação e fechamento. O diário completo reúne os 22 arcanos, com abertura e fechamento da jornada (157 páginas).</p><div style="margin-bottom:12px"><a class="btn" href="diario-completo.pdf" target="_blank" rel="noopener" download>Diário completo (PDF)</a></div><div class="dlist">'+D.cards.map(function(c){return '<a href="'+pdfUrl(c)+'" target="_blank" rel="noopener" download style="--ac:'+ac(c)+'"><b>'+roman(c)+'</b>'+esc(c.nome)+'</a>'}).join('')+'</div></section><section class="sect"><h2>Backup do progresso</h2><p class="note" style="margin:0 0 10px">Seu progresso fica só neste navegador. Para levar para outro aparelho ou guardar com segurança, baixe o backup e depois restaure no outro lugar.</p><div class="row-actions"><button class="btn sm ghost" data-act="exportjson">Baixar backup</button><button class="btn sm ghost" data-act="importjson">Restaurar backup</button><input type="file" id="impfile" accept="application/json,.json" hidden><span class="saved" id="bk" aria-live="polite"></span></div></section>';
   return h}
 function exportText(){var t='DIÁRIO DE BORDO · Tarot Arquetípico\n\n';S.free.forEach(function(e){t+=fmtDate(e.t)+'\n'+e.x+'\n\n'});var last=-1;allNotes().forEach(function(e){if(e.c.num!==last){last=e.c.num;t+='\n== '+e.c.roman+' · '+e.c.nome+' ==\n'}t+='\n'+e.q+'\n'+e.a+'\n'});return t}
 function download(name,text,type){var b=new Blob([text],{type:type||'text/plain;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove()},500)}
@@ -237,7 +237,7 @@ function vMapa(){var done=D.cards.filter(function(c){return score(c.num)!=null})
   else{var hi=done.filter(function(c){return score(c.num)>=6}),lo=done.filter(function(c){return score(c.num)<=2});
     var li=function(a,isHi){return a.length?a.map(function(c){return mapItem(c,isHi)}).join(''):'<div class="empty" style="padding:0">Nenhum por enquanto.</div>'};
     h+='<div class="cols"><div class="box"><h3 style="color:var(--a1)">Predominantes agora</h3>'+li(hi,true)+'</div><div class="box"><h3 style="color:var(--a2)">Pouco acessados</h3>'+li(lo,false)+'</div></div><p class="note" style="margin:0 0 6px">Cada carta de menos acesso é um convite: o que ela oferece e você ainda não usa? Cada predominante tem um oposto na sombra. Toque em uma carta para ver como ler o resultado.</p>'}
-  
+  h+='<div class="row-actions noprint" style="margin:14px 0 0"><button class="btn sm" data-act="printmap">Salvar meu mapa em PDF</button></div>';
   ACTS.forEach(function(a){var list=D.cards.filter(function(c){return c.ato===a.k});
     h+='<div class="act-head" style="--ac:var('+a.cls+')"><h2>'+a.name+'</h2></div>';
     list.forEach(function(c){var t=score(c.num);h+='<button class="mrowmap'+(t==null?' empty':'')+'" data-arc="'+c.num+'" data-tab="eu" style="--ac:'+ac(c)+'"><span class="rn">'+roman(c)+'</span><span><span class="nm">'+esc(c.nome)+'</span><span class="track"><i style="width:'+(t==null?0:t/8*100)+'%"></i></span></span><span class="v">'+(t==null?'fazer':t+'/8')+'</span></button>'})});
@@ -317,4 +317,5 @@ setTheme(S.theme);setFs();
 D.chap=[{title:(D.pre.match(/<h1>(.*?)<\/h1>/)||[0,'Antes de começar'])[1].replace(/<[^>]+>/g,''),html:D.pre.replace(/<h1>.*?<\/h1>/,'')}].concat(D.intro);
 buildIndex();R=fromHash();render();
 if(!S.seen&&R.view==='home')showSplash();
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){})})}
 })();

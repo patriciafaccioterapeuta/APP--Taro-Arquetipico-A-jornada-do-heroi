@@ -2,6 +2,16 @@
    Tema extraído da capa da apostila: vinho profundo, dourado, creme e o brilho do sol no portal.
    Padrão = "Capa" (escuro). Alternativa = "Pergaminho" (claro). */
 
+@font-face{font-family:'Cormorant Garamond';font-weight:600;font-style:normal;font-display:swap;src:url(cormorant-garamond-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:'Cormorant Garamond';font-weight:700;font-style:normal;font-display:swap;src:url(cormorant-garamond-latin-700-normal.woff2) format('woff2')}
+@font-face{font-family:'Cormorant Garamond';font-weight:600;font-style:italic;font-display:swap;src:url(cormorant-garamond-latin-600-italic.woff2) format('woff2')}
+@font-face{font-family:'Lora';font-weight:400;font-style:normal;font-display:swap;src:url(lora-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:'Lora';font-weight:500;font-style:normal;font-display:swap;src:url(lora-latin-500-normal.woff2) format('woff2')}
+@font-face{font-family:'Lora';font-weight:600;font-style:normal;font-display:swap;src:url(lora-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:'Lora';font-weight:400;font-style:italic;font-display:swap;src:url(lora-latin-400-italic.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-weight:400;font-style:normal;font-display:swap;src:url(poppins-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-weight:500;font-style:normal;font-display:swap;src:url(poppins-latin-500-normal.woff2) format('woff2')}
+@font-face{font-family:'Poppins';font-weight:600;font-style:normal;font-display:swap;src:url(poppins-latin-600-normal.woff2) format('woff2')}
 
 :root{
   color-scheme:dark;
@@ -93,7 +103,7 @@ h1,h2,h3{text-wrap:balance}
   position:relative;margin-inline:calc(50% - 50vw);margin-bottom:22px;color:var(--ink);background:#1f0f1a;
   min-height:clamp(600px,calc(100svh - 56px),800px);display:flex;flex-direction:column;overflow:hidden;
   border-radius:0 0 28px 28px;border-bottom:1px solid color-mix(in srgb,var(--accent) 40%,transparent);isolation:isolate}
-.hero .art{position:absolute;left:0;right:0;bottom:0;height:80%;z-index:-1;background:url(art/hero.jpg) center bottom/cover no-repeat;
+.hero .art{position:absolute;left:0;right:0;bottom:0;height:80%;z-index:-1;background:url(hero.jpg) center bottom/cover no-repeat;
   -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 38%,#000 100%);mask-image:linear-gradient(to bottom,transparent 0,#000 38%,#000 100%)}
 .hero::after{content:"";position:absolute;inset:auto 0 0;height:34%;z-index:-1;background:linear-gradient(to top,#1f0f1a 4%,transparent)}
 .hero-top{padding:max(34px,5vh) 20px 0;text-align:center;display:grid;gap:12px;justify-items:center}
@@ -315,7 +325,7 @@ textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px colo
 /* abertura com a capa */
 .splash{position:fixed;inset:0;z-index:200;background:#1c0e18;display:grid;place-items:center;cursor:pointer;animation:fadein .5s}
 .splash[hidden]{display:none}
-.splash .sp-art{position:absolute;inset:0;background:url(art/capa.jpg) center/contain no-repeat}
+.splash .sp-art{position:absolute;inset:0;background:url(capa.jpg) center/contain no-repeat}
 .splash .sp-cta{position:absolute;left:0;right:0;bottom:max(26px,env(safe-area-inset-bottom,0px));display:grid;justify-items:center;gap:8px;
   padding-top:70px;background:linear-gradient(to top,rgba(28,14,24,.92) 30%,transparent)}
 .splash .sp-cta span{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#d8c2cc}
